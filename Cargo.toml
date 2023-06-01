@@ -1,0 +1,6 @@
+[workspace]
+
+members = [
+    "snyk-cli",
+    "snyk-api"
+]
