@@ -1,6 +1,4 @@
 use async_trait::async_trait;
-use reqwest;
-use serde_json;
 
 pub mod error;
 pub mod model;
@@ -59,17 +57,13 @@ impl<'a> Datasource for SnykDatasource<'a> {
             .get(url)
             .header("Authorization", format!("token {}", self.api_key))
             .send()
-            .await;
+            .await
+            .unwrap()
+            .error_for_status()?
+            .json::<model::org::Orgs>()
+            .await?;
 
-        let data = match response {
-            Ok(response) => response.json::<model::org::Orgs>().await,
-            Err(_) => return Err(error::Error::RequestError),
-        };
-
-        match data {
-            Ok(data) => Ok(data),
-            Err(_) => Err(error::Error::ParseError),
-        }
+        Ok(response)
     }
 
     async fn list_aggregated_sca_container_iac_issues(
@@ -90,17 +84,12 @@ impl<'a> Datasource for SnykDatasource<'a> {
             .header("Content-Type", "application/json")
             .body(serde_json::to_string(&body).unwrap())
             .send()
-            .await;
+            .await?
+            .error_for_status()?
+            .json::<model::issue::Issues>()
+            .await?;
 
-        let data = match response {
-            Ok(response) => response.json::<model::issue::Issues>().await,
-            Err(_) => return Err(error::Error::RequestError),
-        };
-
-        match data {
-            Ok(data) => Ok(data),
-            Err(_) => Err(error::Error::ParseError),
-        }
+        Ok(response)
     }
 
     async fn list_sast_issues(
@@ -118,17 +107,12 @@ impl<'a> Datasource for SnykDatasource<'a> {
             .header("Content-Type", "application/vnd.api+json")
             .query(&[("project_id", project_id), ("version", &properties.version)])
             .send()
-            .await;
+            .await?
+            .error_for_status()?
+            .json::<model::issue_v3::Response>()
+            .await?;
 
-        let data = match response {
-            Ok(response) => response.json::<model::issue_v3::Response>().await,
-            Err(_) => return Err(error::Error::RequestError),
-        };
-
-        match data {
-            Ok(data) => Ok(data),
-            Err(_) => Err(error::Error::ParseError),
-        }
+        Ok(response)
     }
 
     async fn list_projects(
@@ -145,17 +129,12 @@ impl<'a> Datasource for SnykDatasource<'a> {
             .header("Content-Type", "application/json")
             .body(serde_json::to_string(&properties).unwrap())
             .send()
-            .await;
+            .await?
+            .error_for_status()?
+            .json::<model::projects::Projects>()
+            .await?;
 
-        let data = match response {
-            Ok(response) => response.json::<model::projects::Projects>().await,
-            Err(_) => return Err(error::Error::RequestError),
-        };
-
-        match data {
-            Ok(data) => Ok(data),
-            Err(_) => Err(error::Error::ParseError),
-        }
+        Ok(response)
     }
 
     async fn next(&self, path: &str) -> Result<model::issue_v3::Response, error::Error> {
@@ -167,17 +146,12 @@ impl<'a> Datasource for SnykDatasource<'a> {
             .header("Authorization", format!("token {}", self.api_key))
             .header("Content-Type", "application/vnd.api+json")
             .send()
-            .await;
+            .await?
+            .error_for_status()?
+            .json::<model::issue_v3::Response>()
+            .await?;
 
-        let data = match response {
-            Ok(response) => response.json::<model::issue_v3::Response>().await,
-            Err(_) => return Err(error::Error::RequestError),
-        };
-
-        match data {
-            Ok(data) => Ok(data),
-            Err(_) => Err(error::Error::ParseError),
-        }
+        Ok(response)
     }
 
     async fn list_sast_issue_details(
@@ -192,16 +166,11 @@ impl<'a> Datasource for SnykDatasource<'a> {
             .header("Authorization", format!("token {}", self.api_key))
             .header("Content-Type", "application/vnd.api+json")
             .send()
-            .await;
+            .await?
+            .error_for_status()?
+            .json::<model::sast_issue_details::Response>()
+            .await?;
 
-        let data = match response {
-            Ok(response) => response.json::<model::sast_issue_details::Response>().await,
-            Err(_) => return Err(error::Error::RequestError),
-        };
-
-        match data {
-            Ok(data) => Ok(data),
-            Err(_) => Err(error::Error::ParseError),
-        }
+        Ok(response)
     }
 }

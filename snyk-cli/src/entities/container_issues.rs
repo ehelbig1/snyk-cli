@@ -9,43 +9,43 @@ pub type ContainerIssues = Vec<ContainerIssue>;
 
 impl FromModel for ContainerIssues {
     fn from_model(model: snyk_api::model::issue::Issues) -> Self {
-        model.issues.into_iter()
-            .map(|mut issue| {
-                ContainerIssue {
-                    pkg_name: issue.pkg_name,
-                    pkg_versions: issue.pkg_versions,
-                    title: issue.issue_data.title,
-                    severity: issue.issue_data.severity,
-                    description: issue.issue_data.description,
-                    cve: if let Some(identifiers) = &mut issue.issue_data.identifiers {
-                        identifiers.cve.to_owned()
-                    } else {
-                        None
-                    },
+        model
+            .issues
+            .into_iter()
+            .map(|mut issue| ContainerIssue {
+                pkg_name: issue.pkg_name,
+                pkg_versions: issue.pkg_versions,
+                title: issue.issue_data.title,
+                severity: issue.issue_data.severity,
+                description: issue.issue_data.description,
+                cve: if let Some(identifiers) = &mut issue.issue_data.identifiers {
+                    identifiers.cve.to_owned()
+                } else {
+                    None
+                },
 
-                    cwe: if let Some(identifiers) = &mut issue.issue_data.identifiers {
-                        identifiers.cwe.to_owned()
-                    } else {
-                        None
-                    },
+                cwe: if let Some(identifiers) = &mut issue.issue_data.identifiers {
+                    identifiers.cwe.to_owned()
+                } else {
+                    None
+                },
 
-                    osvdb: if let Some(identifiers) = &mut issue.issue_data.identifiers {
-                        identifiers.osvdb.to_owned()
-                    } else {
-                        None
-                    },
+                osvdb: if let Some(identifiers) = &mut issue.issue_data.identifiers {
+                    identifiers.osvdb.to_owned()
+                } else {
+                    None
+                },
 
-                    exploit_maturity: issue.issue_data.exploit_maturity,
-                    language: issue.issue_data.language,
-                    nearest_fixed_in_version: issue.issue_data.nearest_fixed_in_version,
-                    is_patched: issue.is_patched,
-                    is_ignored: issue.is_ignored,
-                    is_upgradeable: issue.fix_info.is_upgradable,
-                    is_pinnable: issue.fix_info.is_pinnable,
-                    is_patchable: issue.fix_info.is_patchable,
-                    is_fixable: issue.fix_info.is_fixable,
-                    is_partially_fixable: issue.fix_info.is_partially_fixable
-                }
+                exploit_maturity: issue.issue_data.exploit_maturity,
+                language: issue.issue_data.language,
+                nearest_fixed_in_version: issue.issue_data.nearest_fixed_in_version,
+                is_patched: issue.is_patched,
+                is_ignored: issue.is_ignored,
+                is_upgradeable: issue.fix_info.is_upgradable,
+                is_pinnable: issue.fix_info.is_pinnable,
+                is_patchable: issue.fix_info.is_patchable,
+                is_fixable: issue.fix_info.is_fixable,
+                is_partially_fixable: issue.fix_info.is_partially_fixable,
             })
             .collect()
     }
@@ -95,7 +95,6 @@ pub struct ContainerIssue {
 // }
 
 // pub type SeverityFactors = Vec<SeverityFactor>;
-
 
 // #[derive(Debug, PartialEq, Serialize)]
 // pub struct SeverityFactor {

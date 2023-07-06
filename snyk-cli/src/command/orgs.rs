@@ -1,8 +1,8 @@
+use crate::entities::orgs::FromModel;
 use anyhow;
+use serde_json;
 use snyk_api;
 use structopt::StructOpt;
-use serde_json;
-use crate::entities::orgs::FromModel;
 
 #[derive(Debug, PartialEq, StructOpt)]
 pub struct Opt {
@@ -14,11 +14,11 @@ impl Opt {
     pub async fn run(self, datasource: &dyn snyk_api::Datasource) -> anyhow::Result<()> {
         match self.cmd {
             Command::List(opt) => {
-                let mut orgs = crate::entities::orgs::Orgs::from_model(datasource.list_orgs().await?);
+                let mut orgs =
+                    crate::entities::orgs::Orgs::from_model(datasource.list_orgs().await?);
 
                 orgs = if let Some(name) = opt.name {
-                    orgs
-                        .into_iter()
+                    orgs.into_iter()
                         .filter(|org| org.name.to_lowercase().contains(&name))
                         .collect()
                 } else {

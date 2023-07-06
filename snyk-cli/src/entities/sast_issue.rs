@@ -2,7 +2,10 @@ use serde::Serialize;
 use snyk_api;
 
 impl SastIssue {
-    pub fn from_model(issue_model: &snyk_api::model::issue_v3::Issue, detail_model: snyk_api::model::sast_issue_details::Response) -> Self {
+    pub fn from_model(
+        issue_model: &snyk_api::model::issue_v3::Issue,
+        detail_model: snyk_api::model::sast_issue_details::Response,
+    ) -> Self {
         Self {
             title: issue_model.attributes.title.clone(),
             severity: Severity::from_model(&issue_model.attributes.severity),
@@ -12,7 +15,7 @@ impl SastIssue {
             primary_file_path: detail_model.data.attributes.primary_file_path,
             start_line: None,
             end_line: None,
-            severity_factors: detail_model.data.attributes.priority_score_factors
+            severity_factors: detail_model.data.attributes.priority_score_factors,
         }
     }
 }
@@ -27,7 +30,7 @@ pub struct SastIssue {
     primary_file_path: Option<String>,
     start_line: Option<usize>,
     end_line: Option<usize>,
-    severity_factors: Option<Vec<String>>
+    severity_factors: Option<Vec<String>>,
 }
 
 #[derive(Debug, PartialEq, Serialize)]
@@ -35,7 +38,7 @@ pub enum Severity {
     Critical,
     High,
     Medium,
-    Low
+    Low,
 }
 
 impl Severity {
@@ -44,7 +47,7 @@ impl Severity {
             snyk_api::model::issue_v3::Severity::Critical => Self::Critical,
             snyk_api::model::issue_v3::Severity::High => Self::High,
             snyk_api::model::issue_v3::Severity::Medium => Self::Medium,
-            snyk_api::model::issue_v3::Severity::Low => Self::Low
+            snyk_api::model::issue_v3::Severity::Low => Self::Low,
         }
     }
 }

@@ -14,7 +14,7 @@ impl Issues {
             sca_issues: None,
             container_issues: None,
             iac_issues: None,
-            sast_issues: None
+            sast_issues: None,
         }
     }
 }

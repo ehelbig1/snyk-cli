@@ -9,12 +9,12 @@ pub type Orgs = Vec<Org>;
 
 impl FromModel for Orgs {
     fn from_model(model: snyk_api::model::org::Orgs) -> Self {
-        model.orgs.into_iter()
-            .map(|org| {
-                Org {
-                    name: org.name,
-                    id: org.id
-                }
+        model
+            .orgs
+            .into_iter()
+            .map(|org| Org {
+                name: org.name,
+                id: org.id,
             })
             .collect()
     }
@@ -23,5 +23,5 @@ impl FromModel for Orgs {
 #[derive(Debug, PartialEq, Serialize)]
 pub struct Org {
     pub name: String,
-    pub id: String
+    pub id: String,
 }

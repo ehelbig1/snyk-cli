@@ -1,6 +1,6 @@
+use chrono::{self, Utc};
 use serde::Serialize;
 use snyk_api;
-use chrono::{self, Utc};
 
 #[derive(Debug, PartialEq, Serialize)]
 pub struct SCAIssue {
@@ -73,7 +73,7 @@ impl SCAIssue {
             is_pinnable: model.fix_info.is_pinnable,
             is_patchable: model.fix_info.is_patchable,
             is_fixable: model.fix_info.is_fixable,
-            is_partially_fixable: model.fix_info.is_partially_fixable
+            is_partially_fixable: model.fix_info.is_partially_fixable,
         }
     }
 }
@@ -107,7 +107,7 @@ impl Vulnerable {
     pub fn from_model(model: snyk_api::model::issue::Vulnerable) -> Self {
         match model {
             snyk_api::model::issue::Vulnerable::Version(version) => Self::Version(version),
-            snyk_api::model::issue::Vulnerable::Versions(versions) => Self::Versions(versions)
+            snyk_api::model::issue::Vulnerable::Versions(versions) => Self::Versions(versions),
         }
     }
 }

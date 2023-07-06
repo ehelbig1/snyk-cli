@@ -1,6 +1,3 @@
-use anyhow;
-use reqwest;
-use snyk_api;
 use std::env;
 use structopt::StructOpt;
 

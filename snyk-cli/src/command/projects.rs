@@ -1,8 +1,8 @@
+use crate::entities::projects::FromModel;
 use anyhow;
+use serde_json;
 use snyk_api;
 use structopt::StructOpt;
-use crate::entities::projects::FromModel;
-use serde_json;
 
 #[derive(Debug, PartialEq, StructOpt)]
 pub struct Opt {
@@ -37,7 +37,9 @@ impl Opt {
                 let properties =
                     snyk_api::model::projects::ListProjectsRequest::new().filters(filters);
 
-                let projects = crate::entities::projects::Projects::from_model(datasource.list_projects(&opt.org_id, &properties).await?);
+                let projects = crate::entities::projects::Projects::from_model(
+                    datasource.list_projects(&opt.org_id, &properties).await?,
+                );
                 println!("{}", serde_json::to_string(&projects).unwrap());
 
                 Ok(())

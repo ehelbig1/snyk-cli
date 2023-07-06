@@ -1,6 +1,6 @@
+use chrono::{self, Utc};
 use serde::Serialize;
 use snyk_api;
-use chrono::{self, Utc};
 
 #[derive(Debug, PartialEq, Serialize)]
 pub struct IACIssue {
@@ -8,7 +8,7 @@ pub struct IACIssue {
     severity: String,
     description: Option<String>,
     disclosure_time: Option<chrono::DateTime<Utc>>,
-    path: Option<String>
+    path: Option<String>,
 }
 
 impl IACIssue {
@@ -18,7 +18,7 @@ impl IACIssue {
             severity: model.issue_data.severity,
             description: model.issue_data.description,
             disclosure_time: model.issue_data.disclosure_time,
-            path: model.issue_data.path
+            path: model.issue_data.path,
         }
     }
 }
